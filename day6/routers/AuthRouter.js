@@ -5,9 +5,9 @@ const router=express.Router()
 
 router.get('/hashpassword',AuthController.belajarcrypto)
 router.post('/register',AuthController.register)
+router.post('/registerver',AuthController.registerver)
 router.get('/login',AuthController.login)
 router.get('/sendmail',AuthController.sendmail)
-router.post('/registerver',AuthController.registerver)
 router.put('/verifikasiemail',AuthController.emailverifikasi)
 
 module.exports=router

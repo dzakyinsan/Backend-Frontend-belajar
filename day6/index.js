@@ -3,6 +3,7 @@ const app=express()
 const BodyParser=require('body-parser')
 const cors=require('cors')
 // const bearerToken=require('express-bearer-token')
+const {MongoClient,url}=require('./connection')
 
 
 const PORT=2020
@@ -27,3 +28,5 @@ app.use('/user',userRouters)
 
 
 app.listen(PORT,()=>console.log(`aktif di port ${PORT}`))
+
+

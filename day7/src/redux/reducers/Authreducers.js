@@ -11,13 +11,14 @@ const INITIAL_STATE={
     status:'',
     error:'',
     token:'',
+    register: false,
     authchecked:false,
     loading:false
 }
 export default(state=INITIAL_STATE,action)=>{
     switch (action.type){
         case USER_LOGIN_SUCCESS :
-            return {...INITIAL_STATE,...action.payload,authchecked:true}
+            return {...INITIAL_STATE, register: true}
         case AUTH_SYSTEM_ERROR :
             return{...INITIAL_STATE,...action.payload,authchecked:true}
         case AUTH_LOADING:

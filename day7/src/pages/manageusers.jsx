@@ -15,7 +15,7 @@ function ManageUser() {
   const [modaladd, setmodaladd] = useState(false);
   const [addimagefile, setaddimagefile] = useState({
     addImageFileName: "Select Image....",
-    addImageFile: undefined
+    addImageFile: undefined //
   });
   const [editimagefile, setimageedit] = useState({
     editimagefilename: "Select Image....",
@@ -34,10 +34,7 @@ function ManageUser() {
     setdatausersedit(datausers[index]);
     setModal(true);
   };
-  // const openmodaladd = (index) =>{
-  //   setdatausersedit(datausers[index])
-  //   setModal(true)
-  // };
+
   const toggledelete = index => {
     setModaldelete(!modaldelete);
     setdatauserdelete(datausers[index]);
@@ -79,6 +76,39 @@ function ManageUser() {
         </tr>
       );
     });
+  };
+
+  // ============================================================ function crut ===================================
+
+  const adddata = () => {
+    var formdata = new FormData();
+    const { username, roleid, usia, email } = dataadd;
+    const data = {
+      username: username.current.value,
+      roleid: roleid.current.value,
+      usia: usia.current.value,
+      password: "rahasia",
+      email: email.current.value
+    };
+    const token = localStorage.getItem("token");
+    var Headers = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`
+      }
+    };
+    formdata.append("image", addimagefile.addImageFile);
+    formdata.append("data", JSON.stringify(data));
+    Axios.post(`${APIURL}user/postusers`, formdata, Headers)
+      .then(res => {
+        setdatausers(res.data.datauser);
+        setroles(res.data.datarole);
+        setmodaladd(!modaladd);
+      })
+      .catch(err => {
+        console.log("error pak bu", err);
+        console.log(data);
+      });
   };
 
   const Deletedata = () => {
@@ -126,8 +156,7 @@ function ManageUser() {
       });
   };
   const onAddImageFileChange = event => {
-    // console.log(document.getElementById('addImagePost').files[0])
-    console.log("event.target.files[0]", event.target.files[0]); //ini isinya nama dari img yg kita ambil
+    console.log("event.target.files[0]", event.target.files[0]); //ini isinya object dari img yg kita ambil
     var file = event.target.files[0];
     if (file) {
       setaddimagefile({ ...addimagefile, addImageFileName: file.name, addImageFile: event.target.files[0] });
@@ -146,36 +175,7 @@ function ManageUser() {
       setimageedit({ ...editimagefile, editimagefilename: "Select Image...", editImageFile: undefined });
     }
   };
-  const adddata = () => {
-    var formdata = new FormData();
-    const { username, roleid, usia, email } = dataadd;
-    const data = {
-      username: username.current.value,
-      roleid: roleid.current.value,
-      usia: usia.current.value,
-      password: "rahasia",
-      email: email.current.value
-    };
-    const token = localStorage.getItem("token");
-    var Headers = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${token}`
-      }
-    };
-    formdata.append("image", addimagefile.addImageFile);
-    formdata.append("data", JSON.stringify(data));
-    Axios.post(`${APIURL}user/postusers`, formdata, Headers)
-      .then(res => {
-        setdatausers(res.data.datauser);
-        setroles(res.data.datarole);
-        setmodaladd(!modaladd);
-      })
-      .catch(err => {
-        console.log("error pak bu", err);
-        console.log(data);
-      });
-  };
+  
   if (datausers.length === 0) {
     return <div>loading</div>;
   }
